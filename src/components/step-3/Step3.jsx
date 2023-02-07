@@ -21,11 +21,14 @@ const changeSelectedAddons=(checked, selectedAddon)=>{
     )
   } else 
   {
+    //abrunebs sias monishnuli elementis gareshe!== arudris   - anu daabrunebs adon.id 
     setSelectedAddons(
-      selectedAddons.filter((addon)  => addon.id !== selectedAddon.id));
+      selectedAddons.filter((addon)  => addon.id !== selectedAddon.id));      
   }
 
 };
+
+const checkSelected = (id)=> selectedAddons.some(i => i.id === id)
 
 console.log(selectedAddons);
 
@@ -35,7 +38,7 @@ console.log(selectedAddons);
     <S.Step3>
 {step3[billingType].map( (item) => (
 
-<S.Item key={item.id}>
+<S.Item key={item.id}  isSelected={checkSelected(item.id)}>
 
 <S.Input type="checkbox"  onChange={(e)=> changeSelectedAddons(e.target.checked, item)}/>
 
