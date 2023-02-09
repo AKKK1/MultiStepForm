@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./styled";
 import Step1 from "../step-1/Step1";
+import styled from "styled-components";
+import BoloGverdi from "../boloGverdi/BoloGverdi";
 
 const Step = ({
   onBack,
@@ -11,7 +13,14 @@ const Step = ({
   hasNextButton,
   children,
 }) => {
-  return (
+  const [page, setPage] = useState(false);
+  const axaliGverdi = () => {
+    setPage(!page);
+  };
+
+  return page ? (
+    <BoloGverdi />
+  ) : (
     <S.Step onSubmit={handleSubmit}>
       <S.StepHeader>
         <S.Title>{title}</S.Title>
@@ -28,7 +37,9 @@ const Step = ({
         {hasNextButton ? (
           <S.GoNextButton type="submit">Go Next</S.GoNextButton>
         ) : (
-          <S.GoNextButton type="submit">Confirm</S.GoNextButton>
+          <S.GoNextButton onClick={axaliGverdi} type="submit">
+            Confirm
+          </S.GoNextButton>
         )}
       </S.StepFooter>
     </S.Step>
