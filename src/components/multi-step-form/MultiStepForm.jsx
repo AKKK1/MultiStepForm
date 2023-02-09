@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import SideBar from '../sidebar/SideBar'
-import Step1 from '../step-1/Step1'
-import styled from 'styled-components'
-import * as S from './styled'
-import Step from '../step/Step'
-import Step2 from '../step-2/Step2'
-import Step3 from '../step-3/Step3'
-import Step4 from '../step-4/Step4'
-
+import React, { useState } from "react";
+import SideBar from "../sidebar/SideBar";
+import Step1 from "../step-1/Step1";
+import styled from "styled-components";
+import * as S from "./styled";
+import Step from "../step/Step";
+import Step2 from "../step-2/Step2";
+import Step3 from "../step-3/Step3";
+import Step4 from "../step-4/Step4";
 
 const Steps = {
   step1: {
@@ -39,17 +38,39 @@ const Steps = {
 };
 
 const MultiStepForm = () => {
+  const [formData, setFormData] = useState({
+    step1: {},
+    step2: {},
+    step3: {},
+  });
+  const [activeStep, setActiveStep] = useState("step1");
+  const ActiveStep = Steps[activeStep].component;
 
-const [activeStep, setActiveStep] = useState('step3');
-const ActiveStep = Steps[activeStep].component;
+  const handleStepSubmit = (stepId, nextStepId, stepData) => {
+    setFormData({
+      ...formData,
+      [stepId]: stepData,
+    });
+
+    setActiveStep(nextStepId);
+    console.log(formData);
+  };
+
+  const handleBack = () => {
+    const currentStepNumber = Number(activeStep.slice(-1)); // anu activeStep -aris amjamindeli da magas vigebt nomers marto stringidan slice methodit -
+    setActiveStep(`step${currentStepNumber - 1}`); // im amogebuls vaklebt 1s
+  };
   return (
-    
-        <S.StepForm>
-        <SideBar activeStep={activeStep}/>
-        <ActiveStep {...Steps[activeStep]}/>
-        </S.StepForm>
-    
-  )
-}
+    <S.StepForm>
+      <SideBar activeStep={activeStep} />
+      <ActiveStep
+        {...Steps[activeStep]}
+        onStepSubmit={handleStepSubmit}
+        formData={formData}
+        onBack={handleBack}
+      />
+    </S.StepForm>
+  );
+};
 
-export default MultiStepForm
+export default MultiStepForm;

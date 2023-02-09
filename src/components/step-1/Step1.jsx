@@ -1,51 +1,48 @@
-import React from 'react'
-import Step from '.././step/Step'
-import * as S from './styled'
-import FormJSON from '../../form.json'
+import React from "react";
+import Step from ".././step/Step";
+import * as S from "./styled";
+import FormJSON from "../../form.json";
 
+const Step1 = ({ onStepSubmit, formData, ...props }) => {
+  const { step1 } = FormJSON;
+  const hasError = false;
 
+  const onSubmit = (e) => {
+    e.preventDefault();
 
-const Step1 = (props) => {
+    const formData = new FormData(e.target);
+    const formProperties = Object.fromEntries(formData);
 
-const{step1} = FormJSON;
-const hasError = true;
+    //validation rule
+    onStepSubmit("step1", "step2", formProperties);
+  };
 
   return (
-
-    <Step {...props}>
+    <Step {...props} handleSubmit={onSubmit}>
       <S.Step1>
+        {step1.map((item) => (
+          <S.FormItem key={item.id} hasError={hasError}>
+            <S.Label hasError={hasError} htmlFor={item.id}>
+              {item.label}
+            </S.Label>
 
-      {
-          step1.map(item =>
-             (
-  <S.FormItem key={item.id} hasError={hasError}>
-  <S.Label 
-   hasError={hasError}
-   
-  htmlFor={item.id}> 
-  {item.label}
-  </S.Label>
+            <S.Input
+              defaultValue={formData.step1[item.id]}
+              hasError={hasError}
+              id={item.id}
+              name={item.id}
+              type={item.type}
+              placeholder={item.placeholder}
+            />
 
-<S.Input 
+            {hasError && (
+              <S.ErrorMessage>This field is required</S.ErrorMessage>
+            )}
+          </S.FormItem>
+        ))}
+      </S.Step1>
+    </Step>
+  );
+};
 
-hasError={hasError}
-id={item.id}
-name={item.id}
-  type={item.type}
-   placeholder={item.placeholder} />
-
-{hasError && (<S.ErrorMessage >This field is required</S.ErrorMessage >) }
-    </S.FormItem>
-
-          ))
-
-      }
-
-</S.Step1>
-
-
-       </Step>
-  )
-}
-
-export default Step1
+export default Step1;
